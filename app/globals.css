@@ -146,7 +146,9 @@ body {
 @media(max-width:1000px){.home-page .photo-frame{height:400px}}
 @media(max-width:700px){.home-page .photo-frame{height:320px}}
 
-/* Keep the About portrait in a fixed frame that matches the photo, so it never stretches or crops. */
+/* Give the supplied portrait more breathing room so the full head remains visible. */
+.split-image.about-portrait{height:650px;object-position:50% 0%;}
+@media(max-width:700px){.split-image.about-portrait{height:520px;object-position:50% 0%;}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
 /* Keep type and calls to action clear at every size. */
 .primary-button,.nav-cta{color:#fff!important}.primary-button:hover,.nav-cta:hover{background:#1d3f30}.brand small{font-size:.75rem;letter-spacing:.07em}.eyebrow,.hero .eyebrow,.resource-card>.eyebrow,.audience-strip span{font-size:.75rem}.audience-strip p,.subtle-link,.text-link,.card-link,.centred-note,.footer-main>div>a:not(.brand),.footer-main h3,.contact-options label,.contact-card .privacy-note{font-size:.875rem}.need-card p,.resource-card>p:last-child,.approach p:not(.eyebrow),.conversation-banner p:not(.eyebrow),.section-heading>p,.footer-main p{font-size:1rem}.image-note,.footer-place,.acknowledgement,.footer-bottom,.resource-art>span:not(.resource-symbol){font-size:.75rem}.resource-art>span:not(.resource-symbol){letter-spacing:.06em}.hero h1{letter-spacing:-.06em}.need-card h3{font-size:1.18rem}.resource-card h3{font-size:1.2rem}.resource-card>.eyebrow{letter-spacing:.05em}.resource-card .eyebrow span{white-space:nowrap}.contact-card .privacy-note{line-height:1.65}.footer-bottom{flex-wrap:wrap}.footer-main .text-link{line-height:1.65!important}.audience-strip b{margin:0 10px}.resource-symbol{user-select:none}
@@ -157,15 +159,9 @@ body {
 .brand-mark{width:59px;font-size:2.3rem;letter-spacing:-.17em;transform:translateY(-2px)}.brand{gap:17px;font-size:1.6rem;letter-spacing:-.045em}.brand small{font-size:.75rem;letter-spacing:.15em;margin-top:6px}.resource-art>span:first-child{max-width:180px}
 @media(max-width:700px){.brand{font-size:1.4rem;gap:12px}.brand-mark{font-size:2rem;width:52px}.brand small{font-size:.75rem;letter-spacing:.1em}}
 
-.split-image.about-portrait{
-  width:100%;
-  height:auto;
-  aspect-ratio:736 / 1600;
-  object-fit:cover;
-  object-position:center top;
-  display:block;
-}
-@media(max-width:700px){.split-image.about-portrait{height:auto;}}
+/* Final portrait framing: retain the full face while bringing both hands into view. */
+.split-image.about-portrait{height:650px;object-position:50% 50%;}
+@media(max-width:700px){.split-image.about-portrait{height:520px;object-position:50% 50%;}}
 
 /* Direct contact details supplied for the Crescent Consulting Group card. */
 .direct-contact{margin-top:32px;padding:22px 24px;background:#edf3e9;border:1px solid #d6e1d3;border-radius:5px;display:flex;flex-direction:column;align-items:flex-start;gap:5px;max-width:420px}
