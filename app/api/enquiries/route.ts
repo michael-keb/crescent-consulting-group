@@ -1,6 +1,5 @@
 import { enquiryDb } from '@/db/enquiries';
-import { isAllowedEnquiryOrigin, siteOriginForEmail } from '@/lib/enquiry-origin';
-import { sendEnquiryEmail } from '@/lib/send-enquiry-email';
+import { isAllowedEnquiryOrigin } from '@/lib/enquiry-origin';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -41,28 +40,15 @@ export async function POST(request: Request) {
     const data = value.data;
     const reference = data.id.slice(0, 8).toUpperCase();
 
-    await sendEnquiryEmail(
-      {
-        reference,
-        kind: data.kind,
-        name: data.name,
-        email: data.email,
-        organisation: data.organisation,
-        message: data.message,
-        availability: data.availability,
-      },
-      siteOriginForEmail(request),
-    );
-
     try {
       await saveEnquiry(data);
     } catch (error) {
-      console.error('Enquiry saved by email but database write failed', error instanceof Error ? error.message : 'Unknown error');
+      console.error('Enquiry database write failed', error instanceof Error ? error.message : 'Unknown error');
     }
 
     return Response.json({ ok: true, reference, kind: data.kind });
   } catch (error) {
-    console.error('Unable to send enquiry', error instanceof Error ? error.message : 'Unknown error');
+    console.error('Unable to save enquiry', error instanceof Error ? error.message : 'Unknown error');
     const message =
       error instanceof Error
         ? error.message

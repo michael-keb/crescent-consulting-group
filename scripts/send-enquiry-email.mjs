@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 /**
- * Sends a test enquiry email to raja@crescentconsulting.com.au via FormSubmit.
+ * Sends a test enquiry email via Web3Forms.
  * Usage:
  *   node scripts/send-enquiry-email.mjs
  *   node scripts/send-enquiry-email.mjs --name "Jane Doe" --email "jane@example.com" --message "Hello"
  */
 
-const RECIPIENT = 'raja@crescentconsulting.com.au';
-const FORMSUBMIT_URL = `https://formsubmit.co/ajax/${encodeURIComponent(RECIPIENT)}`;
+const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
+const WEB3FORMS_ACCESS_KEY = '9357096f-810b-427f-9559-7ff309ecdfea';
 
 function readArg(flag, fallback = '') {
   const index = process.argv.indexOf(flag);
@@ -24,26 +24,23 @@ const payload = {
   availability: readArg('--availability', ''),
 };
 
-const siteOrigin = readArg('--origin', 'https://crescentconsulting.com.au');
 const kindLabel = payload.kind === 'call' ? 'Call request' : 'Enquiry';
 
-const response = await fetch(FORMSUBMIT_URL, {
+const response = await fetch(WEB3FORMS_URL, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Referer: `${siteOrigin.replace(/\/$/, '')}/conversation`,
-    'User-Agent': 'CrescentConsultingGroup/1.0',
   },
   body: JSON.stringify({
-    _subject: `CCG ${kindLabel} — ${payload.reference}`,
-    _template: 'table',
-    _captcha: 'false',
-    _replyto: payload.email,
-    reference: payload.reference,
-    request_type: kindLabel,
-    name: payload.name,
+    access_key: WEB3FORMS_ACCESS_KEY,
+    subject: `CCG ${kindLabel} — ${payload.reference}`,
+    from_name: payload.name,
     email: payload.email,
+    replyto: payload.email,
+    name: payload.name,
+    request_type: kindLabel,
+    reference: payload.reference,
     organisation: payload.organisation || '—',
     message: payload.message,
     availability: payload.availability || '—',
@@ -52,4 +49,4 @@ const response = await fetch(FORMSUBMIT_URL, {
 
 const body = await response.json();
 console.log(JSON.stringify({ status: response.status, body }, null, 2));
-process.exit(body.success === true || body.success === 'true' ? 0 : 1);
+process.exit(body.success === true ? 0 : 1);
