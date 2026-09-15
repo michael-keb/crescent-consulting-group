@@ -9,34 +9,68 @@ if (!existsSync(configPath)) {
   process.exit(1);
 }
 
+process.env.CI = "true";
+process.env.WRANGLER_SEND_METRICS = "false";
+
 const port = process.env.PORT || "10000";
 const ip = process.env.HOST || "0.0.0.0";
 const wrangler = fileURLToPath(new URL("../node_modules/wrangler/bin/wrangler.js", import.meta.url));
 
-const child = spawn(
-  process.execPath,
-  [
-    wrangler,
-    "dev",
-    "--config",
-    configPath,
-    "--persist-to",
-    ".wrangler/state",
-    "--ip",
-    ip,
-    "--port",
-    String(port),
-    "--inspector-port",
-    "0",
-  ],
-  { stdio: "inherit" },
-);
+let child = null;
+let shuttingDown = false;
 
-for (const signal of ["SIGINT", "SIGTERM"]) {
-  process.on(signal, () => child.kill(signal));
+function start() {
+  if (shuttingDown) return;
+
+  child = spawn(
+    process.execPath,
+    [
+      wrangler,
+      "dev",
+      "--config",
+      configPath,
+      "--persist-to",
+      ".wrangler/state",
+      "--ip",
+      ip,
+      "--port",
+      String(port),
+      "--inspector-port",
+      "0",
+      "--live-reload",
+      "false",
+      "--show-interactive-dev-session",
+      "false",
+    ],
+    {
+      stdio: ["ignore", "inherit", "inherit"],
+      env: {
+        ...process.env,
+        CI: "true",
+        WRANGLER_SEND_METRICS: "false",
+      },
+    },
+  );
+
+  child.on("exit", (code, signal) => {
+    child = null;
+    if (shuttingDown) {
+      process.exit(code ?? 1);
+      return;
+    }
+    console.error(`Wrangler stopped (${signal || `exit ${code ?? 1}`}). Restarting in 1s.`);
+    setTimeout(start, 1000);
+  });
 }
 
-child.on("exit", (code, signal) => {
-  if (signal) process.exit(1);
-  process.exit(code ?? 1);
-});
+function stop(signal) {
+  shuttingDown = true;
+  if (child) child.kill(signal);
+  else process.exit(0);
+}
+
+for (const signal of ["SIGINT", "SIGTERM"]) {
+  process.on(signal, () => stop(signal));
+}
+
+start();
