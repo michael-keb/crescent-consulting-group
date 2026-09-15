@@ -1,0 +1,2 @@
+import {Button} from '@/components/ui/button';
+export default function NotFound(){return <main id="main" className="wrap page-hero" style={{paddingBottom:90}}><p className="eyebrow">LET’S FIND YOUR WAY</p><h1>That page isn’t here.</h1><p>You can return home or start a conversation — no perfect question needed.</p><Button asChild className="primary-button" style={{marginTop:30}}><a href="/">Back to Crescent Consulting Group</a></Button></main>}
