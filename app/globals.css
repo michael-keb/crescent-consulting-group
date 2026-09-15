@@ -147,20 +147,17 @@ body {
 @media(max-width:700px){.home-page .photo-frame{height:320px}}
 
 /* Keep the About portrait in a fixed 600×450 frame on desktop. */
+.about-intro.content-grid{grid-template-columns:1fr 600px;align-items:start}
 .split-image.about-portrait{
   width:600px;
-  max-width:100%;
   height:450px;
-  aspect-ratio:600 / 450;
   object-fit:cover;
   object-position:center 18%;
   display:block;
 }
-@media(max-width:1000px) and (min-width:701px){
-  .split-image.about-portrait{height:auto;}
-}
 @media(max-width:700px){
-  .split-image.about-portrait{width:100%;height:auto;object-position:center 18%;}
+  .about-intro.content-grid{grid-template-columns:1fr}
+  .split-image.about-portrait{width:100%;height:auto;aspect-ratio:600 / 450;object-position:center 18%;}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
 /* Keep type and calls to action clear at every size. */
