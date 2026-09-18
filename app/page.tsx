@@ -20,7 +20,7 @@ export default function Home() {
           <Button asChild className="primary-button"><a href="/conversation">Let’s start a conversation <ArrowUpRight/></a></Button>
         </div>
         <div className="hero-visual">
-          <div className="photo-frame" id="hero-photo"><img src="/australian-workplace-five.png" alt="Five colleagues working together around a shared table in a warm Australian workplace" width={1774} height={887} fetchPriority="high"/></div>
+          <div className="photo-frame" id="hero-photo"><img src="/australian-workplace-five.jpg" alt="Five colleagues working together around a shared table in a warm Australian workplace" width={1400} height={700} fetchPriority="high"/></div>
           <a className="explore-panel" href="/how-we-help"><div><strong>Explore how we can help</strong><span>Practical support for your workplace.</span></div><ArrowUpRight size={26}/></a>
         </div>
       </section>
